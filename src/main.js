@@ -114,6 +114,9 @@ let lastPointer = { x: 0, y: 0 };
 
 const canvas = stage.renderer.domElement;
 
+// 不管用户第一次碰的是画面还是时辰控件，都在这次手势里解锁背景音乐。
+window.addEventListener('pointerdown', () => audio.start(), { once: true });
+
 function updateNDC(e) {
   ndc.x = (e.clientX / window.innerWidth) * 2 - 1;
   ndc.y = -(e.clientY / window.innerHeight) * 2 + 1;

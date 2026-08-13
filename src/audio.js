@@ -1,5 +1,5 @@
 /*
- * 全部现场合成，一个音频文件都不加载。
+ * 交互声由现场合成，背景音乐使用独立媒体元素播放。
  *
  * 单位体积内，声音提供的情绪密度远高于任何 shader。
  * 没有声音的治愈系永远隔着一层。
@@ -41,10 +41,16 @@ export class Audio {
     this.ctx = null;
     this.ready = false;
     this.enabled = true;
+    this.music = document.getElementById('background-music');
+    if (this.music) this.music.volume = 0.28;
   }
 
   /** 必须由一次真实的用户手势触发。 */
   start() {
+    // 有声媒体通常会被浏览器的自动播放策略拦住；第一次触碰画布时再启动。
+    // play() 的拒绝表示当前环境仍不允许播放，下一次交互会再次尝试。
+    this.music?.play().catch(() => {});
+
     if (this.ctx) { if (this.ctx.state === 'suspended') this.ctx.resume(); return; }
     const Ctx = window.AudioContext || window.webkitAudioContext;
     if (!Ctx) return;
