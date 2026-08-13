@@ -21,6 +21,14 @@ npm install
 npm run dev
 ```
 
+Cloudflare Pages 部署：
+
+```bash
+npm run deploy:cloudflare
+```
+
+在线体验：<https://tea-three.pages.dev>
+
 ## 怎么玩
 
 - **拖**：把桌上的药材拖到杯口，松手，它会掉下去、砸出一圈涟漪、慢慢沉底。
