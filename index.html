@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="zh">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>煎</title>
+    <style>
+      :root { color-scheme: dark; }
+      html, body {
+        margin: 0; padding: 0; height: 100%; overflow: hidden;
+        background: #100b09;
+        font-family: "Songti SC", "STSong", "Source Han Serif SC", "Noto Serif CJK SC", serif;
+      }
+      body { cursor: default; }
+      canvas { display: block; touch-action: none; }
+
+      /* 一层极轻的暖色晕影，让画面边缘沉下去 */
+      #vignette {
+        position: fixed; inset: 0; pointer-events: none; z-index: 2;
+        background:
+          radial-gradient(120% 100% at 50% 45%, rgba(0,0,0,0) 42%, rgba(20,10,4,0.55) 100%);
+        mix-blend-mode: multiply;
+      }
+
+      #ui {
+        position: fixed; inset: 0; pointer-events: none; z-index: 3;
+        display: flex; align-items: flex-end; justify-content: center;
+        padding-bottom: 7vh;
+      }
+
+      #line {
+        font-size: clamp(13px, 1.5vw, 17px);
+        letter-spacing: 0.32em;
+        text-indent: 0.32em;
+        color: rgba(255, 233, 208, 0.62);
+        font-weight: 300;
+        opacity: 0;
+        transition: opacity 2.6s cubic-bezier(0.4, 0, 0.2, 1);
+        text-align: center;
+        white-space: pre-wrap;
+        line-height: 2.1;
+      }
+      #line.on { opacity: 1; }
+
+      /* 药材名：跟着指针，很轻地淡入，无边框 */
+      #label {
+        position: fixed; z-index: 4; pointer-events: none;
+        font-size: clamp(12px, 1.3vw, 15px);
+        letter-spacing: 0.28em; text-indent: 0.28em;
+        color: rgba(255, 226, 196, 0.78);
+        opacity: 0;
+        transform: translate(-50%, -140%);
+        transition: opacity 1.1s ease;
+        text-shadow: 0 0 18px rgba(0,0,0,0.55);
+      }
+      #label.on { opacity: 1; }
+
+      /* 时辰。平时几乎看不见，靠近了才浮起来 —— 它是一个把手，不是一个仪表盘 */
+      #clock {
+        position: fixed; z-index: 5;
+        left: 50%; bottom: 2.6vh; transform: translateX(-50%);
+        width: min(400px, 58vw);
+        padding: 22px 0 10px;
+        opacity: 0.2;
+        transition: opacity 0.7s ease;
+        touch-action: none;
+        cursor: ew-resize;
+      }
+      #clock:hover, #clock.live { opacity: 0.95; }
+
+      #clock-track {
+        position: relative; height: 1px;
+        background: linear-gradient(to right,
+          rgba(255,228,196,0.06), rgba(255,228,196,0.34) 22%,
+          rgba(255,228,196,0.34) 78%, rgba(255,228,196,0.06));
+      }
+      #clock-marks { position: absolute; inset: -2px 0; }
+      #clock-marks i {
+        position: absolute; top: 0; width: 1px; height: 5px;
+        background: rgba(255,228,196,0.30);
+        transform: translateX(-0.5px);
+      }
+      #clock-knob {
+        position: absolute; top: 50%; left: 68%;
+        width: 7px; height: 7px; margin: -3.5px 0 0 -3.5px;
+        border-radius: 50%;
+        background: rgba(255,236,210,0.9);
+        box-shadow: 0 0 12px rgba(255,196,130,0.55);
+      }
+      #clock-name {
+        position: absolute; left: 0; top: -2px;
+        transform: translateX(-50%);
+        font-size: 12px; letter-spacing: 0.3em; text-indent: 0.3em;
+        color: rgba(255,232,204,0.72);
+        white-space: nowrap; pointer-events: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="vignette"></div>
+    <div id="ui"><div id="line"></div></div>
+    <div id="label"></div>
+    <div id="clock">
+      <div id="clock-name">午后</div>
+      <div id="clock-track">
+        <div id="clock-marks"></div>
+        <div id="clock-knob"></div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
